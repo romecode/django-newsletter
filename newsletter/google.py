@@ -9,7 +9,7 @@ from oauth2client import tools
 from oauth2client.file import Storage
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-from .models import Subscription, Newsletter
+
 import json
 import re
 import random
