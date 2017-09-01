@@ -9,7 +9,7 @@ from oauth2client import tools
 from oauth2client.file import Storage
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-
+from newsletter.models import Subscription, Newsletter
 import json
 import re
 import random
@@ -21,21 +21,25 @@ SCOPES = 'https://www.googleapis.com/auth/admin.directory.group.member'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Groups Settings API Python Quickstart'
 
+
+
 def remove(email,group,service=None):
     if not service:
         credentials = get_credentials()
         http = credentials.authorize(httplib2.Http())
         service = discovery.build('admin', 'directory_v1', http=http)
     
-    print(group)
     
+    print(group)
     try:
         
         results=service.members().delete(groupKey=group,memberKey=email).execute()
-        
+        print('REMOVED: {0}'.format(results))
     except HttpError as err:
+        
         print('ERROR REMOVE: {0}'.format(err._get_reason()))
         print('ERROR REMOVE: {0}'.format(email))
+        
     
 def list(group,service=None):
     if not service:
@@ -72,20 +76,20 @@ def add(record,group,service=None):
     body={ # JSON template for Member resource in Directory API.
         "status": "ACTIVE", # Status of member (Immutable)
         "kind": "admin#directory#member", # Kind of resource this is.
-        "id": str(record.id), # Unique identifier of customer member (Read-only) Unique identifier of group (Read-only) Unique identifier of member (Read-only)
         
         "role": "MEMBER", # Role of member
         "type":"EXTERNAL",
         "email": record.get_email(), # Email of member (Read-only)
         }
-    
+    print(group)
     try:
         results=service.members().insert(groupKey=group,body=body).execute()
         print('ADDED: {0}'.format(results))
     except HttpError as err:
-        record.delete()
-        print('ERROR REMOVE: {0}'.format(err._get_reason()))
-        print('ERROR REMOVE: {0}'.format(record.get_email()))
+        
+        
+        print('ERROR ADD: {0}'.format(err._get_reason()))
+        print('ERROR ADD: {0}'.format(record.get_email()))
        
 def get_credentials():
     """Gets valid user credentials from storage.
