@@ -229,7 +229,7 @@ class Subscription(models.Model):
 
         self.subscribe_date = now()
         self.subscribed = True
-        google.add(self.get_email(),self.newsletter.email)
+        google.add(self,self.newsletter.email)
         self.unsubscribed = False
 
     def _unsubscribe(self):
