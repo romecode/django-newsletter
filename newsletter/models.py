@@ -14,7 +14,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.utils.timezone import now
-
+import google
 from sorl.thumbnail import ImageField
 
 from .compat import get_context
@@ -198,14 +198,6 @@ class Subscription(models.Model):
         """
 
         assert action in ('subscribe', 'update', 'unsubscribe')
-
-        # If a new subscription or update, make sure it is subscribed
-        # Else, unsubscribe
-        if action == 'subscribe' or action == 'update':
-            self.subscribed = True
-        else:
-            self.unsubscribed = True
-
         logger.debug(
             _(u'Updated subscription %(subscription)s to %(action)s.'),
             {
@@ -213,6 +205,16 @@ class Subscription(models.Model):
                 'action': action
             }
         )
+        # If a new subscription or update, make sure it is subscribed
+        # Else, unsubscribe
+        if action == 'subscribe' or action == 'update':
+            self.subscribed = True
+            
+        else:
+            self.unsubscribed = True
+            
+
+        
 
         # This triggers the subscribe() and/or unsubscribe() methods, taking
         # care of stuff like maintaining the (un)subscribe date.
@@ -227,6 +229,7 @@ class Subscription(models.Model):
 
         self.subscribe_date = now()
         self.subscribed = True
+        google.add(self.get_email(),self.newsletter.email)
         self.unsubscribed = False
 
     def _unsubscribe(self):
@@ -235,7 +238,7 @@ class Subscription(models.Model):
         during unsubscription.
         """
         logger.debug(u'Unsubscribing subscription %s.', self)
-
+        google.remove(self.get_email(),self.newsletter.email)
         self.subscribed = False
         self.unsubscribed = True
         self.unsubscribe_date = now()
