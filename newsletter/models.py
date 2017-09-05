@@ -165,7 +165,11 @@ class Subscription(models.Model):
         db_column='name', max_length=30, blank=True, null=True,
         verbose_name=_('name'), help_text=_('optional')
     )
-
+    api_key = models.CharField(
+        db_column='api_key', max_length=30, blank=True, null=True,
+        verbose_name=_('api_key'), help_text=_('google api_key')
+    )
+    
     def get_name(self):
         if self.user:
             return self.user.get_full_name()
@@ -290,6 +294,11 @@ class Subscription(models.Model):
 
                 assert not self.subscribed
                 assert self.unsubscribed
+            else:
+                if self.subscribed:
+                    self._subscribe()
+                else:
+                    self._unsubscribe()
         else:
             if self.subscribed:
                 self._subscribe()
