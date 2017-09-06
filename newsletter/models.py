@@ -213,10 +213,11 @@ class Subscription(models.Model):
         # Else, unsubscribe
         if action == 'subscribe' or action == 'update':
             self.subscribed = True
+            self._subscribe()
             
         else:
             self.unsubscribed = True
-            
+            self._unsubscribe()
 
         
 
