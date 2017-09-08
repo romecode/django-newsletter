@@ -458,7 +458,7 @@ class Article(models.Model):
         verbose_name=_('image')
     )
     
-    _article = models.ForeignKey("_core.Article")
+    _article = models.ForeignKey("_core.Article",blank=True,null=True)
 
     # Message this article is associated with
     # TODO: Refactor post to message (post is legacy notation).
