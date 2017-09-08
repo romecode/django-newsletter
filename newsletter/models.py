@@ -457,6 +457,8 @@ class Article(models.Model):
         upload_to='newsletter/images/%Y/%m/%d', blank=True, null=True,
         verbose_name=_('image')
     )
+    
+    _article = models.ForeignKey("_core.Article")
 
     # Message this article is associated with
     # TODO: Refactor post to message (post is legacy notation).
