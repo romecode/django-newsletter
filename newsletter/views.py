@@ -620,7 +620,7 @@ class SubmissionArchiveDetailView(SubmissionViewBase, DateDetailView):
         """
       
         return SimpleTemplateResponse(
-            template=self.get_template().origin,
+            template=self.get_template(),
             context=context,
             **response_kwargs
         )
