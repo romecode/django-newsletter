@@ -458,7 +458,7 @@ class Article(models.Model):
         verbose_name=_('image')
     )
     
-    _article = models.ForeignKey("_core.Article",blank=True,null=True)
+    core_article = models.ForeignKey("_core.Article",blank=True,null=True)
 
     # Message this article is associated with
     # TODO: Refactor post to message (post is legacy notation).
@@ -542,6 +542,7 @@ class Message(models.Model):
 
     @property
     def subject_template(self):
+        
         return self._templates[0]
 
     @property
@@ -722,7 +723,7 @@ class Submission(models.Model):
         help_text=_('If you select none, the system will automatically find '
                     'the subscribers for you.'),
         blank=True, db_index=True, verbose_name=_('recipients'),
-        limit_choices_to={'subscribed': True}
+        limit_choices_to={'subscribed': True,'email_field__endswith':"africaglobalfunds.com"}
     )
 
     publish_date = models.DateTimeField(

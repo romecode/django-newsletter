@@ -38,7 +38,7 @@ from .forms import (
 from .settings import newsletter_settings
 from .utils import ACTIONS
 
-
+from _core.models import Magazine
 logger = logging.getLogger(__name__)
 
 
@@ -586,7 +586,10 @@ class SubmissionArchiveDetailView(SubmissionViewBase, DateDetailView):
         message = self.object.message
 
         context.update({
+            'magazine':Magazine.objects.get_feat_magazines()[0],
             'message': message,
+            'features':message.articles.all()[:2],
+            'news':message.articles.all()[2:],
             'site': Site.objects.get_current(),
             'date': self.object.publish_date,
             'STATIC_URL': settings.STATIC_URL,
@@ -599,7 +602,7 @@ class SubmissionArchiveDetailView(SubmissionViewBase, DateDetailView):
         """ Get the message template for the current newsletter. """
 
         html_template = self.object.message.html_template
-
+        
         # No HTML -> no party!
         if not html_template:
             raise Http404(ugettext(
@@ -615,8 +618,9 @@ class SubmissionArchiveDetailView(SubmissionViewBase, DateDetailView):
         any context. Use a SimpleTemplateResponse as a RequestContext should
         not be used.
         """
+      
         return SimpleTemplateResponse(
-            template=self.get_template(),
+            template=self.get_template().origin,
             context=context,
             **response_kwargs
         )
