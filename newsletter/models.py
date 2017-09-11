@@ -618,7 +618,11 @@ class Submission(models.Model):
 
     def send_message(self, subscription):
         variable_dict = {
-            'subscription': subscription,
+            'magazine':Magazine.objects.get_feat_magazines()[0],
+            
+            'features':self.message.articles.all()[:2],
+            'news':self.message.articles.all()[2:],
+            
             'site': Site.objects.get_current(),
             'submission': self,
             'message': self.message,
