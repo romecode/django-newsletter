@@ -16,7 +16,7 @@ from django.utils.translation import ugettext
 from django.utils.timezone import now
 import google
 from sorl.thumbnail import ImageField
-
+from _core.models import Magazine
 from .compat import get_context
 from .utils import (
     make_activation_code, get_default_sites, ACTIONS
