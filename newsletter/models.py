@@ -630,9 +630,9 @@ class Submission(models.Model):
 
         unescaped_context = get_context(variable_dict, autoescape=False)
 
-        subject = self.message.subject_template.render(
+        subject = select_template(self.message.subject_template).render(
             unescaped_context).strip()
-        text = self.message.text_template.render(unescaped_context)
+        text = select_template(self.message.text_template).render(unescaped_context)
 
         message = EmailMultiAlternatives(
             subject, text,
@@ -645,7 +645,7 @@ class Submission(models.Model):
             escaped_context = get_context(variable_dict)
 
             message.attach_alternative(
-                self.message.html_template.render(escaped_context),
+                select_template(self.message.html_template).render(escaped_context),
                 "text/html"
             )
 
