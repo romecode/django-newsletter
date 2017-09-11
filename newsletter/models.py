@@ -75,25 +75,25 @@ class Newsletter(models.Model):
         # Common root path for all the templates
         tpl_root = 'newsletter/message/'
 
-        subject_template = select_template([
+        subject_template = [
             tpl_root + '%(newsletter)s/%(action)s_subject.txt' % tpl_subst,
             tpl_root + '%(action)s_subject.txt' % tpl_subst,
-        ])
+        ]
 
-        text_template = select_template([
+        text_template = [
             tpl_root + '%(newsletter)s/%(action)s.txt' % tpl_subst,
             tpl_root + '%(action)s.txt' % tpl_subst,
-        ])
+        ]
 
         if self.send_html:
-            html_template = select_template([
+            html_template = [
                 tpl_root + '%(newsletter)s/%(action)s.html' % tpl_subst,
                 tpl_root + '%(action)s.html' % tpl_subst,
-            ])
+            ]
         else:
             # HTML templates are not required
             html_template = None
-
+        
         return (subject_template, text_template, html_template)
 
     def __str__(self):
