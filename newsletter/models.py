@@ -139,7 +139,7 @@ class Newsletter(models.Model):
         )
 
     def get_sender(self):
-        return u'%s <%s>' % (self.sender, self.email)
+        return u'%s' % (self.sender)
 
     def get_subscriptions(self):
         logger.debug(u'Looking up subscribers for %s', self)
