@@ -412,7 +412,7 @@ class SubscriptionAdmin(NewsletterAdminLinkMixin, ExtendibleModelAdminMixin,
     make_subscribed.short_description = _("Subscribe selected users")
 
     def make_unsubscribed(self, request, queryset):
-        rows_updated = queryset.update(subscribed=False)
+        rows_updated = queryset.update(subscribed=False,unsubscribed=True)
         self.message_user(
             request,
             ungettext(
