@@ -499,6 +499,9 @@ class Message(models.Model):
         upload_to='newsletter/images/%Y/%m/%d', blank=True, null=True,
         verbose_name=_('banner')
     )
+    banner_url = models.URLField(
+        verbose_name=_('banner_url'), blank=True, null=True
+    )
     date_create = models.DateTimeField(
         verbose_name=_('created'), auto_now_add=True, editable=False
     )
