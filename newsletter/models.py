@@ -495,7 +495,10 @@ class Message(models.Model):
     newsletter = models.ForeignKey(
         Newsletter, verbose_name=_('newsletter'), on_delete=models.CASCADE
     )
-
+    banner = ImageField(
+        upload_to='newsletter/images/%Y/%m/%d', blank=True, null=True,
+        verbose_name=_('banner')
+    )
     date_create = models.DateTimeField(
         verbose_name=_('created'), auto_now_add=True, editable=False
     )
