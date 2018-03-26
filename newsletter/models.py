@@ -153,9 +153,16 @@ class Newsletter(models.Model):
         except IndexError:
             return None
 
+class SubscriptionQuerySet(models.QuerySet):
 
+    def delete(self, *args, **kwargs):
+        for obj in self:
+            google.remove(obj.get_email(),obj.newsletter.email)
+        super(SubscriptionQuerySet, self).delete(*args, **kwargs)
+        
 @python_2_unicode_compatible
 class Subscription(models.Model):
+    objects = SubscriptionQuerySet.as_manager()
     user = models.ForeignKey(
         AUTH_USER_MODEL, blank=True, null=True, verbose_name=_('user'),
         on_delete=models.CASCADE
