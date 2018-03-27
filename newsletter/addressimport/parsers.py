@@ -80,8 +80,8 @@ def subscription_exists(newsletter, email, name=None):
     """
     qs = Subscription.objects.filter(
         newsletter__id=newsletter.id,
-        subscribed=True,
-        email_field__exact=email)
+        #subscribed=True,
+        email_field__iexact=email)
 
     return qs.exists()
 
