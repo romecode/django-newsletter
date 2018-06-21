@@ -48,7 +48,7 @@ class AddressList(object):
         if email in self.addresses:
             logger.warning(
                 "Entry '%s' contains a duplicate entry at %s."
-                % (email, location)f
+                % (email, location)
             )
 
             if not self.ignore_errors:
