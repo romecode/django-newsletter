@@ -4,6 +4,7 @@ logger = logging.getLogger(__name__)
 import io
 
 from django import forms
+from django.db.models import Q 
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.translation import ugettext as _
@@ -47,7 +48,7 @@ class AddressList(object):
         if email in self.addresses:
             logger.warning(
                 "Entry '%s' contains a duplicate entry at %s."
-                % (email, location)
+                % (email, location)f
             )
 
             if not self.ignore_errors:
@@ -63,14 +64,14 @@ class AddressList(object):
                 "Entry '%s' is already subscribed to at %s."
                 % (email, location)
             )
-
+            
             if not self.ignore_errors:
                 raise forms.ValidationError(
                     _("Some entries are already subscribed to."))
 
             # Skip this entry
             return
-
+        print "am I still here"
         self.addresses[email] = name
 
 
@@ -78,10 +79,7 @@ def subscription_exists(newsletter, email, name=None):
     """
     Return wheter or not a subscription exists.
     """
-    qs = Subscription.objects.filter(
-        newsletter__id=newsletter.id,
-        #subscribed=True,
-        email_field__iexact=email)
+    qs = Subscription.objects.filter(Q(newsletter__id=1,user__email__iexact=email) | Q(newsletter__id=1,email_field__iexact=email))
 
     return qs.exists()
 
