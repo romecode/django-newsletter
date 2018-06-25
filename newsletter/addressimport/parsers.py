@@ -79,7 +79,7 @@ def subscription_exists(newsletter, email, name=None):
     """
     Return wheter or not a subscription exists.
     """
-    qs = Subscription.objects.filter(Q(newsletter__id=1,user__email__iexact=email) | Q(newsletter__id=1,email_field__iexact=email))
+    qs = Subscription.objects.filter(Q(newsletter__id=newsletter,user__email__iexact=email) | Q(newsletter__id=newsletter,email_field__iexact=email))
 
     return qs.exists()
 
