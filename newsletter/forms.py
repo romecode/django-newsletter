@@ -48,7 +48,7 @@ class SubscribeRequestForm(NewsletterForm):
         # Check whether we have already been subscribed to
         try:
             subscription = Subscription.objects.get(
-                email_field__exact=data,
+                email_field__iexact=data,
                 newsletter=self.instance.newsletter
             )
 
@@ -94,7 +94,7 @@ class UpdateRequestForm(NewsletterForm):
         try:
             self.instance = Subscription.objects.get(
                 newsletter=self.instance.newsletter,
-                email_field__exact=data
+                email_field__iexact=data
             )
 
         except Subscription.DoesNotExist:
